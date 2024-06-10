@@ -4,7 +4,7 @@ div.st-emotion-cache-vdokb0 {
 }
 
 div.st-emotion-cache-13ln4jf {
-    padding: 1rem 1rem 10rem;
+    padding: 1rem 1rem 3rem;
 }
 
 div.st-emotion-cache-dvne4q {
@@ -29,4 +29,8 @@ h1{
 
 div.user-select-none.svg-container{
     height: 400px;
+}
+
+.st-emotion-cache-vdokb0 td {
+    padding: 6px 0px;
 }
