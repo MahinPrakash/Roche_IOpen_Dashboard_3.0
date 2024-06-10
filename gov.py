@@ -32,9 +32,21 @@ def main():
         if(disease_indication=="WET AMD" and time_horizon=="1" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "6", "Drug 2": "8", "Drug 3": "8", "Drug 4": "12", "Drug 5": "12"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -47,9 +59,21 @@ def main():
         elif(disease_indication=="WET AMD" and time_horizon=="2" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "9", "Drug 2": "14", "Drug 3": "12", "Drug 4": "24", "Drug 5": "24"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -62,9 +86,21 @@ def main():
         elif(disease_indication=="WET AMD" and time_horizon=="3" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "12", "Drug 2": "20", "Drug 3": "16", "Drug 4": "36", "Drug 5": "36"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -77,9 +113,21 @@ def main():
         elif(disease_indication=="WET AMD" and time_horizon=="4" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "15", "Drug 2": "26", "Drug 3": "20", "Drug 4": "48", "Drug 5": "48"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -92,9 +140,21 @@ def main():
         elif(disease_indication=="WET AMD" and time_horizon=="5" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "18", "Drug 2": "32", "Drug 3": "24", "Drug 4": "60", "Drug 5": "60"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -107,9 +167,21 @@ def main():
         elif(disease_indication=="DME" and time_horizon=="1" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "6", "Drug 2": "9", "Drug 3": "9", "Drug 4": "12", "Drug 5": "12"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -123,9 +195,21 @@ def main():
         elif(disease_indication=="DME" and time_horizon=="2" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "9", "Drug 2": "15", "Drug 3": "13", "Drug 4": "24", "Drug 5": "24"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -139,9 +223,21 @@ def main():
         elif(disease_indication=="DME" and time_horizon=="3" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "12", "Drug 2": "21", "Drug 3": "17", "Drug 4": "36", "Drug 5": "36"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -155,9 +251,21 @@ def main():
         elif(disease_indication=="DME" and time_horizon=="4" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "15", "Drug 2": "27", "Drug 3": "21", "Drug 4": "48", "Drug 5": "48"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -171,9 +279,21 @@ def main():
         elif(disease_indication=="DME" and time_horizon=="5" and naive_switch=="Naive" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "18", "Drug 2": "33", "Drug 3": "25", "Drug 4": "60", "Drug 5": "60"}
             
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -185,9 +305,21 @@ def main():
 
         elif(disease_indication=="WET AMD" and naive_switch=="Switch" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "3", "Drug 2": "6", "Drug 3": "4", "Drug 4": "12", "Drug 5": "12"}        
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -199,9 +331,21 @@ def main():
         
         elif(disease_indication=="DME" and naive_switch=="Switch" and clinical_status=="Per Label"):
             user_info = {"Drug 1": "3", "Drug 2": "6", "Drug 3": "4", "Drug 4": "12", "Drug 5": "12"}        
-            table = "<table><tr><th style='width:70px'>Drug</th><th style='width:70px'>Dosage</th></tr>"
+            table = """
+                    <style>
+                    .centered-table {
+                        width: 100%;
+                    }
+                    .centered-table th, .centered-table td {
+                        text-align: center;
+                        width: 70px;
+                    }
+                    </style>
+                    <table class='centered-table'>
+                    <tr><th>Drug</th><th>Dosage</th></tr>
+                    """
             for key in user_info.keys():
-                table += f"<tr><td style='width:70%'>{key}</td><td style='width:70%'>{user_info[key]}</td></tr>"
+                table += f"<tr><td>{key}</td><td>{user_info[key]}</td></tr>"
             table += "</table>"
             st.sidebar.markdown(table, unsafe_allow_html=True)
             st.sidebar.markdown("<br>", unsafe_allow_html=True)
@@ -660,7 +804,7 @@ def main():
     fig.update_traces(hovertemplate='Drug: %{x}<br>Cost Type: %{hovertext}<br>Total Cost: ₹%{y:,.0f}k')
     fig.update_yaxes(tickprefix="₹",ticksuffix="k")
     fig.update_xaxes( title_text='')
-    fig.update_layout(legend_title_text='Legend',height=300)
+    fig.update_layout(legend_title_text='',height=300)
     st.write(fig)
 
     html_data = data.to_html(index=False)
@@ -699,6 +843,7 @@ def main():
         drug_1_package_cost_percent=round((drug_1_package_cost/drug_1_total_cost)*100)
         drug_1_direct_costs_percent=round((drug_1_direct_costs/drug_1_total_cost)*100)
         drug_1_indirect_costs_percent=round((drug_1_indirect_costs/drug_1_total_cost)*100)
+     
     except ZeroDivisionError:
         drug_1_package_cost_percent=0
         drug_1_direct_costs_percent=0
@@ -714,6 +859,7 @@ def main():
         drug_2_package_cost_percent=round((drug_2_package_cost/drug_2_total_cost)*100)
         drug_2_direct_costs_percent=round((drug_2_direct_costs/drug_2_total_cost)*100)
         drug_2_indirect_costs_percent=round((drug_2_indirect_costs/drug_2_total_cost)*100)
+       
     except ZeroDivisionError:
         drug_2_package_cost_percent=0
         drug_2_direct_costs_percent=0
@@ -731,6 +877,7 @@ def main():
         drug_3_package_cost_percent=round((drug_3_package_cost/drug_3_total_cost)*100)
         drug_3_direct_costs_percent=round((drug_3_direct_costs/drug_3_total_cost)*100)
         drug_3_indirect_costs_percent=round((drug_3_indirect_costs/drug_3_total_cost)*100)
+      
     except ZeroDivisionError:
         drug_3_package_cost_percent=0
         drug_3_direct_costs_percent=0
@@ -747,6 +894,7 @@ def main():
         drug_4_package_cost_percent=round((drug_4_package_cost/drug_4_total_cost)*100)
         drug_4_direct_costs_percent=round((drug_4_direct_costs/drug_4_total_cost)*100)
         drug_4_indirect_costs_percent=round((drug_4_indirect_costs/drug_4_total_cost)*100)
+        
     except ZeroDivisionError:
         drug_4_package_cost_percent=0
         drug_4_direct_costs_percent=0
@@ -764,12 +912,32 @@ def main():
         drug_5_package_cost_percent=round((drug_5_package_cost/drug_5_total_cost)*100)
         drug_5_direct_costs_percent=round((drug_5_direct_costs/drug_5_total_cost)*100)
         drug_5_indirect_costs_percent=round((drug_5_indirect_costs/drug_5_total_cost)*100)
+    
     except ZeroDivisionError:
         drug_5_package_cost_percent=0
         drug_5_direct_costs_percent=0
         drug_5_indirect_costs_percent=0
   
-  
+    print("drug_1_package_cost_percent:",drug_1_package_cost_percent)
+    print("drug_1_direct_costs_percent",drug_1_direct_costs_percent)
+    print("drug_1_indirect_costs_percent",drug_1_indirect_costs_percent)
+    print()
+    print("drug_2_package_cost_percent:",drug_2_package_cost_percent)
+    print("drug_2_direct_costs_percent",drug_2_direct_costs_percent)
+    print("drug_2_indirect_costs_percent",drug_2_indirect_costs_percent)
+    print()
+    print("drug_3_package_cost_percent:",drug_3_package_cost_percent)
+    print("drug_3_direct_costs_percent",drug_3_direct_costs_percent)
+    print("drug_3_indirect_costs_percent",drug_3_indirect_costs_percent)
+    print()
+    print("drug_4_package_cost_percent:",drug_4_package_cost_percent)
+    print("drug_4_direct_costs_percent",drug_4_direct_costs_percent)
+    print("drug_4_indirect_costs_percent",drug_4_indirect_costs_percent)
+    print()
+    print("drug_5_package_cost_percent:",drug_5_package_cost_percent)
+    print("drug_5_direct_costs_percent",drug_5_direct_costs_percent)
+    print("drug_5_indirect_costs_percent",drug_5_indirect_costs_percent)
+
     df1 = pd.DataFrame({"Cost Type": ["Package Costs", "Direct Costs", "Indirect Costs"], "Values": [drug_1_package_cost_percent, drug_1_direct_costs_percent, drug_1_indirect_costs_percent]})
     df2 = pd.DataFrame({"Cost Type": ["Package Costs", "Direct Costs", "Indirect Costs"], "Values": [drug_2_package_cost_percent, drug_2_direct_costs_percent, drug_2_indirect_costs_percent]})
     df3 = pd.DataFrame({"Cost Type": ["Package Costs", "Direct Costs", "Indirect Costs"], "Values": [drug_3_package_cost_percent, drug_3_direct_costs_percent, drug_3_indirect_costs_percent]})
@@ -797,6 +965,7 @@ def main():
     # fig.update_traces()
 
     fig.update_layout(height=330,width=700)
+    # fig.update_traces(textposition='inside')
 
     # Display the figure with streamlit
     st.plotly_chart(fig)
@@ -824,7 +993,7 @@ def main():
    
 #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-#....................................Cumulative Comparison of Costs...........................................
+#....................................Cumulative Comparison of Costs........................................
     custom_style = """
                         <style>
                             .cumulative_comparison_of_costs_title{
@@ -863,7 +1032,7 @@ def main():
                 display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             
@@ -881,7 +1050,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="3":
@@ -898,7 +1067,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="4":
@@ -915,7 +1084,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
                     
             elif time_horizon=="5":
@@ -933,7 +1102,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
         elif selected_drug_1=="Drug 2":
@@ -951,7 +1120,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
@@ -968,7 +1137,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
@@ -985,7 +1154,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="4":
@@ -1002,8 +1171,8 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
-                st.markdown(display_df, unsafe_allow_html=True)     
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
+                st.markdown(display_df, unsafe_allow_html=True)    
             
             
             elif time_horizon=="5":
@@ -1020,7 +1189,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
         elif selected_drug_1=="Drug 3":
@@ -1038,7 +1207,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
@@ -1055,7 +1224,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
@@ -1072,7 +1241,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="4":
@@ -1089,7 +1258,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="5":
@@ -1106,7 +1275,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
                 
@@ -1126,7 +1295,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
@@ -1144,7 +1313,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
@@ -1162,7 +1331,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="4":
@@ -1180,7 +1349,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="5":
@@ -1199,7 +1368,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
         elif selected_drug_1=="Drug 5":
@@ -1218,7 +1387,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
@@ -1236,7 +1405,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
@@ -1254,7 +1423,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
                 
 
@@ -1273,7 +1442,7 @@ def main():
 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="5":
@@ -1292,7 +1461,7 @@ def main():
                 
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
                 
     
@@ -1320,8 +1489,8 @@ def main():
                 display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
                 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="2":
@@ -1345,8 +1514,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="3":
@@ -1369,8 +1538,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="4":
@@ -1393,8 +1562,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
                     
             elif time_horizon=="5":
@@ -1419,8 +1588,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
         elif selected_drug_2=="Drug 2":
@@ -1445,8 +1614,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
@@ -1470,8 +1639,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
@@ -1495,8 +1664,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})    
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="4":
@@ -1520,8 +1689,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)    
             
             
@@ -1547,9 +1716,9 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
-                st.markdown(display_df, unsafe_allow_html=True)  
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
+                st.markdown(display_df, unsafe_allow_html=True) 
 
         elif selected_drug_2=="Drug 3":
             if time_horizon=="1":
@@ -1573,8 +1742,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="2":
@@ -1598,8 +1767,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="3":
@@ -1623,8 +1792,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="4":
@@ -1648,8 +1817,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
             
             elif time_horizon=="5":
@@ -1673,8 +1842,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
             
                 
@@ -1700,8 +1869,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="2":
@@ -1725,8 +1894,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="3":
@@ -1750,8 +1919,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="4":
@@ -1775,9 +1944,9 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
-                st.markdown(display_df, unsafe_allow_html=True)  
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
+                st.markdown(display_df, unsafe_allow_html=True) 
             
             elif time_horizon=="5":
                 display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹1,72,800","₹1,62,000","₹7,92,000"],"3":["₹2,59,200","₹2,43,000","₹11,88,000"],"4":["₹3,45,600","₹3,24,000","₹15,84,000"],"5":["₹4,32,000","₹4,05,000","₹19,80,000"]})
@@ -1801,8 +1970,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
             
         elif selected_drug_2=="Drug 5":
@@ -1827,8 +1996,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="2":
@@ -1853,8 +2022,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="3":
@@ -1878,9 +2047,9 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
-                st.markdown(display_df, unsafe_allow_html=True)  
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
+                st.markdown(display_df, unsafe_allow_html=True) 
                 
 
             elif time_horizon=="4":
@@ -1904,8 +2073,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
             
             elif time_horizon=="5":
@@ -1929,8 +2098,8 @@ def main():
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
                 display_df = display_df.to_html(index=False)
-                display_df = display_df.replace('<table', '<table class="table5" style="table-layout: fixed; width: 100%;" ')
-                display_df = display_df.replace('<thead>', '<thead><style>.table5 th:first-child { width: 70px; } .table5 td, .table5 th { text-align: center;vertical-align: middle; font-size: 0.57em; width: auto; }</style>')
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)   
 
 
