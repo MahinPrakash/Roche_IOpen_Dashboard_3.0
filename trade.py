@@ -989,7 +989,7 @@ def main():
                         </style>
                         """
 
-    st.markdown(f"{custom_style}<div class='cumulative_comparison_of_costs_title'>Cumulative Comparison of Costs over the years 1-5</div>", unsafe_allow_html=True)
+    st.markdown(f"{custom_style}<div class='cumulative_comparison_of_costs_title'>Cumulative Comparison of Costs over the years </div>", unsafe_allow_html=True)
     st.write("Select the Drugs to be compared:")
     drop_col1,drop_col2=st.columns(2)
     with drop_col1:
