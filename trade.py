@@ -20,18 +20,18 @@ def main():
             f.write(time_horizon)
         patient_support=st.sidebar.selectbox('Patient Support',['Yes','No'])
         if patient_support == "Yes":
-            drug1_cost_per_vial=30000  #---Drug 1 = Faricimab
-            drug2_cost_per_vial=24000 #---Drug 2 = Aflibercept
-            drug3_cost_per_vial=35000 #---Drug 3 = Brolucizumab
-            drug4_cost_per_vial=25000  #---Drug 4 = Ranibizumab
-            drug5_cost_per_vial=20000  #---Drug 5 = Rani Biosimilar
+            drug1_cost_per_vial=30000  
+            drug2_cost_per_vial=24000 
+            drug3_cost_per_vial=35000 
+            drug4_cost_per_vial=25000  
+            drug5_cost_per_vial=20000 
             
         else:
-            drug1_cost_per_vial=75000  #---Drug 1 = Faricimab
-            drug2_cost_per_vial=60000 #---Drug 2 = Aflibercept
-            drug3_cost_per_vial=35000 #---Drug 3 = Brolucizumab
-            drug4_cost_per_vial=25000  #---Drug 4 = Ranibizumab
-            drug5_cost_per_vial=20000  #---Drug 5 = Rani Biosimilar
+            drug1_cost_per_vial=75000  
+            drug2_cost_per_vial=60000 
+            drug3_cost_per_vial=35000 
+            drug4_cost_per_vial=25000  
+            drug5_cost_per_vial=20000  
         
         naive_switch=st.sidebar.selectbox('Naive/Switch',['Naive','Switch'])
         clinical_status=st.sidebar.selectbox('Clinical Status',['Per Label','RWE'])
