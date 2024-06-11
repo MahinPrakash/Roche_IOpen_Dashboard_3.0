@@ -20,11 +20,11 @@ def main():
             f.write(time_horizon)
         government_ac=st.sidebar.selectbox('Government A/C',['Yes','No'])
 
-        drug1_cost_per_vial=60000  #---Drug 1 = Faricimab
-        drug2_cost_per_vial=45000 #---Drug 2 = Aflibercept
-        drug3_cost_per_vial=25000 #---Drug 3 = Brolucizumab
-        drug4_cost_per_vial=18000  #---Drug 4 = Ranibizumab
-        drug5_cost_per_vial=10000  #---Drug 5 = Rani Biosimilar
+        drug1_cost_per_vial=60000  
+        drug2_cost_per_vial=45000 
+        drug3_cost_per_vial=25000 
+        drug4_cost_per_vial=18000  
+        drug5_cost_per_vial=10000  
         
         naive_switch=st.sidebar.selectbox('Naive/Switch',['Naive','Switch'])
         clinical_status=st.sidebar.selectbox('Clinical Status',['Per Label','RWE'])
@@ -983,14 +983,7 @@ def main():
     package_cost_data=pd.DataFrame({f"Total Package Costs @ Year {time_horizon}":package_cost_dataset['Drugs'].tolist(),'Total Package Cost':package_cost_dataset['Total Package Cost'].tolist(),'Direct Costs':[wes_to_indian_conversion(drug_1_direct_costs),wes_to_indian_conversion(drug_2_direct_costs),wes_to_indian_conversion(drug_3_direct_costs),wes_to_indian_conversion(drug_4_direct_costs),wes_to_indian_conversion(drug_5_direct_costs)],'Indirect Costs':[wes_to_indian_conversion(drug_1_indirect_costs),wes_to_indian_conversion(drug_2_indirect_costs),wes_to_indian_conversion(drug_3_indirect_costs),wes_to_indian_conversion(drug_4_indirect_costs),wes_to_indian_conversion(drug_5_indirect_costs)],'Total Costs':package_cost_dataset['Total Cost/Patient'].tolist()})
 
     st.dataframe(package_cost_data,hide_index=True,width=800)
-
-    cost_type_display_data=pd.DataFrame({'Type of Cost':['Direct Cost','Indirect Cost','Total Package Costs'],'Cost Components':['Consulting Cost + OCT Charges','Travel and Food Costs + Lost Opportunity Cost of Patient and Caregiver','Injection + Procedure Costs']})
-    cost_type_display_data = cost_type_display_data.to_html(index=False)
-    cost_type_display_data = cost_type_display_data.replace('<table', '<table class="cost_type_display_data" style="table-layout: fixed;" ')
-    cost_type_display_data = cost_type_display_data.replace('<thead>', '<thead><style>.cost_type_display_data th:first-child { width: 200px; } .cost_type_display_data th:nth-child(2) { width: 530px; } .cost_type_display_data td, .cost_type_display_data th { text-align: center; font-size: 13px;}</style>')
-    st.markdown(cost_type_display_data, unsafe_allow_html=True)
-  
-   
+     
 #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 #....................................Cumulative Comparison of Costs........................................
@@ -1006,7 +999,7 @@ def main():
                         </style>
                         """
 
-    st.markdown(f"{custom_style}<div class='cumulative_comparison_of_costs_title'>Cumulative Comparison of Costs over the years </div>", unsafe_allow_html=True)
+    st.markdown(f"{custom_style}<div class='cumulative_comparison_of_costs_title'>Cumulative Comparison of Costs over the years 1-5</div>", unsafe_allow_html=True)
     st.write("Select the Drugs to be compared:")
     drop_col1,drop_col2=st.columns(2)
     with drop_col1:
@@ -2101,7 +2094,13 @@ def main():
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
                 display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)   
-
+                
+    st.markdown("<br>", unsafe_allow_html=True)
+    cost_type_display_data=pd.DataFrame({'Type of Cost':['Direct Cost','Indirect Cost','Total Package Costs'],'Cost Components':['Consulting Cost + OCT Charges','Travel and Food Costs + Lost Opportunity Cost of Patient and Caregiver','Injection + Procedure Costs']})
+    cost_type_display_data = cost_type_display_data.to_html(index=False)
+    cost_type_display_data = cost_type_display_data.replace('<table', '<table class="cost_type_display_data" style="table-layout: fixed;" ')
+    cost_type_display_data = cost_type_display_data.replace('<thead>', '<thead><style>.cost_type_display_data th:first-child { width: 200px; } .cost_type_display_data th:nth-child(2) { width: 530px; } .cost_type_display_data td, .cost_type_display_data th { text-align: center; font-size: 13px;}</style>')
+    st.markdown(cost_type_display_data, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
