@@ -967,13 +967,6 @@ def main():
 
     st.dataframe(package_cost_data,hide_index=True,width=800)
 
-    cost_type_display_data=pd.DataFrame({'Type of Cost':['Direct Cost','Indirect Cost','Total Package Costs'],'Cost Components':['Consulting Cost + OCT Charges','Travel and Food Costs + Lost Opportunity Cost of Patient and Caregiver','Injection + Procedure Costs']})
-    cost_type_display_data = cost_type_display_data.to_html(index=False)
-    cost_type_display_data = cost_type_display_data.replace('<table', '<table class="cost_type_display_data" style="table-layout: fixed;" ')
-    cost_type_display_data = cost_type_display_data.replace('<thead>', '<thead><style>.cost_type_display_data th:first-child { width: 200px; } .cost_type_display_data th:nth-child(2) { width: 530px; } .cost_type_display_data td, .cost_type_display_data th { text-align: center; font-size: 13px;}</style>')
-    st.markdown(cost_type_display_data, unsafe_allow_html=True)
-  
-   
 #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 #....................................Cumulative Comparison of Costs....................................
@@ -989,7 +982,7 @@ def main():
                         </style>
                         """
 
-    st.markdown(f"{custom_style}<div class='cumulative_comparison_of_costs_title'>Cumulative Comparison of Costs over the years </div>", unsafe_allow_html=True)
+    st.markdown(f"{custom_style}<div class='cumulative_comparison_of_costs_title'>Cumulative Comparison of Costs over the years 1-5</div>", unsafe_allow_html=True)
     st.write("Select the Drugs to be compared:")
     drop_col1,drop_col2=st.columns(2)
     with drop_col1:
@@ -2085,6 +2078,12 @@ def main():
                 display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)  
 
-
+    st.markdown("<br>", unsafe_allow_html=True)
+    cost_type_display_data=pd.DataFrame({'Type of Cost':['Direct Cost','Indirect Cost','Total Package Costs'],'Cost Components':['Consulting Cost + OCT Charges','Travel and Food Costs + Lost Opportunity Cost of Patient and Caregiver','Injection + Procedure Costs']})
+    cost_type_display_data = cost_type_display_data.to_html(index=False)
+    cost_type_display_data = cost_type_display_data.replace('<table', '<table class="cost_type_display_data" style="table-layout: fixed;" ')
+    cost_type_display_data = cost_type_display_data.replace('<thead>', '<thead><style>.cost_type_display_data th:first-child { width: 200px; } .cost_type_display_data th:nth-child(2) { width: 530px; } .cost_type_display_data td, .cost_type_display_data th { text-align: center; font-size: 13px;}</style>')
+    st.markdown(cost_type_display_data, unsafe_allow_html=True)
+    
 if __name__ == "__main__":
     main()
