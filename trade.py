@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.subplots as sp
-
+import plotly.express as px
+from plotly.subplots import make_subplots
 
 def main():
     with open('styles.css') as f:
