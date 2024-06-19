@@ -9,7 +9,6 @@ def main():
     with open('styles.css') as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
     with st.sidebar:
-        # st.image('https://www.vabysmo-hcp.com/content/dam/gene/vabysmo-hcp/logos/vabysmo-logo-og.genecoreimg.1200.png')
         drugs_selected = st.multiselect(
         "Drugs Selected",
         ["Drug 1", "Drug 2", "Drug 3", "Drug 4","Drug 5"],
@@ -20,11 +19,11 @@ def main():
             f.write(time_horizon)
         government_ac=st.sidebar.selectbox('Government A/C',['Yes','No'])
 
-        drug1_cost_per_vial=60000  
-        drug2_cost_per_vial=45000 
-        drug3_cost_per_vial=25000 
-        drug4_cost_per_vial=18000  
-        drug5_cost_per_vial=10000  
+        drug1_cost_per_vial=60000  #---Drug 1 = Faricimab
+        drug2_cost_per_vial=45000 #---Drug 2 = Aflibercept
+        drug3_cost_per_vial=25000 #---Drug 3 = Brolucizumab
+        drug4_cost_per_vial=18000  #---Drug 4 = Ranibizumab
+        drug5_cost_per_vial=10000  #---Drug 5 = Rani Biosimilar
         
         naive_switch=st.sidebar.selectbox('Naive/Switch',['Naive','Switch'])
         clinical_status=st.sidebar.selectbox('Clinical Status',['Per Label','RWE'])
@@ -918,25 +917,6 @@ def main():
         drug_5_direct_costs_percent=0
         drug_5_indirect_costs_percent=0
   
-    print("drug_1_package_cost_percent:",drug_1_package_cost_percent)
-    print("drug_1_direct_costs_percent",drug_1_direct_costs_percent)
-    print("drug_1_indirect_costs_percent",drug_1_indirect_costs_percent)
-    print()
-    print("drug_2_package_cost_percent:",drug_2_package_cost_percent)
-    print("drug_2_direct_costs_percent",drug_2_direct_costs_percent)
-    print("drug_2_indirect_costs_percent",drug_2_indirect_costs_percent)
-    print()
-    print("drug_3_package_cost_percent:",drug_3_package_cost_percent)
-    print("drug_3_direct_costs_percent",drug_3_direct_costs_percent)
-    print("drug_3_indirect_costs_percent",drug_3_indirect_costs_percent)
-    print()
-    print("drug_4_package_cost_percent:",drug_4_package_cost_percent)
-    print("drug_4_direct_costs_percent",drug_4_direct_costs_percent)
-    print("drug_4_indirect_costs_percent",drug_4_indirect_costs_percent)
-    print()
-    print("drug_5_package_cost_percent:",drug_5_package_cost_percent)
-    print("drug_5_direct_costs_percent",drug_5_direct_costs_percent)
-    print("drug_5_indirect_costs_percent",drug_5_indirect_costs_percent)
 
     df1 = pd.DataFrame({"Cost Type": ["Package Costs", "Direct Costs", "Indirect Costs"], "Values": [drug_1_package_cost_percent, drug_1_direct_costs_percent, drug_1_indirect_costs_percent]})
     df2 = pd.DataFrame({"Cost Type": ["Package Costs", "Direct Costs", "Indirect Costs"], "Values": [drug_2_package_cost_percent, drug_2_direct_costs_percent, drug_2_indirect_costs_percent]})
@@ -999,7 +979,7 @@ def main():
                         </style>
                         """
 
-    st.markdown(f"{custom_style}<div class='cumulative_comparison_of_costs_title'>Cumulative Comparison of Costs over the years </div>", unsafe_allow_html=True)
+    st.markdown(f"{custom_style}<div class='cumulative_comparison_of_costs_title'>Cumulative Comparison of Costs over the years 1-5</div>", unsafe_allow_html=True)
     st.write("Select the Drugs to be compared:")
     drop_col1,drop_col2=st.columns(2)
     with drop_col1:
@@ -1009,11 +989,34 @@ def main():
 
     
     col1,col2=st.columns(2)
+    cumulative_predefined_drug1_perlabel_dosage_y1=6
+    cumulative_predefined_drug2_perlabel_dosage_y1=8
+    cumulative_predefined_drug3_perlabel_dosage_y1=8
+    cumulative_predefined_drug4_perlabel_dosage_y1=12
+    cumulative_predefined_drug5_perlabel_dosage_y1=12
+
+    cumulative_predefined_drug1_perlabel_dosage_y2345=3
+    cumulative_predefined_drug2_perlabel_dosage_y2345=6
+    cumulative_predefined_drug3_perlabel_dosage_y2345=4
+    cumulative_predefined_drug4_perlabel_dosage_y2345=12
+    cumulative_predefined_drug5_perlabel_dosage_y2345=12
     with col1:
         if selected_drug_1=="Drug 1":
+           
             if time_horizon=="1":
                 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[450000,40500,43200,0,0,0,0,0,0,0,0,0,0,0,0]})
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1022,7 +1025,8 @@ def main():
                 fig.update_yaxes(tickformat=',',ticksuffix="k",tickprefix="₹")
                 st.plotly_chart(fig,config={'displayModeBar': False})
 
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
                 display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
@@ -1030,9 +1034,31 @@ def main():
 
             
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹64,800","₹60,750","₹6,75,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
                 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[450000,40500,43200,675000,60750,64800,0,0,0,0,0,0,0,0,0]})
+                cumulative_total_package_cost_y2=((drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1047,9 +1073,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹64,800","₹60,750","₹6,75,000"],"3":["₹86,400","₹81,000","₹9,00,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[450000,40500,43200,675000,60750,64800,900000,81000,86400,0,0,0,0,0,0]})
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1064,9 +1119,44 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹64,800","₹60,750","₹6,75,000"],"3":["₹86,400","₹81,000","₹9,00,000"],"4":["₹1,08,000","₹1,01,250","₹11,25,000"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[450000,40500,43200,675000,60750,64800,900000,81000,86400,1125000,101250,108000,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1081,9 +1171,49 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
                     
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹64,800","₹60,750","₹6,75,000"],"3":["₹86,400","₹81,000","₹9,00,000"],"4":["₹1,08,000","₹1,01,250","₹11,25,000"],"5":["₹1,29,000","₹1,21,500","₹13,50,000"]})
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
                 
-                chart_df=pd.DataFrame({'year':[1,1,1,2,2,2,3,3,3,4,4,4,5,5,5],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[450000,40500,43200,675000,60750,64800,900000,81000,86400,1125000,101250,108000,1350000,121500,129000]})
+                cumulative_total_package_cost_y2=((drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1099,11 +1229,26 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
         elif selected_drug_1=="Drug 2":
-            if time_horizon=="1":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[480000,54000,57600,0,0,0,0,0,0,0,0,0,0,0,0]})
- 
+            if time_horizon=="1":
+
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    print(drug2_dosage)
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
+
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+
+                
                 chart_df['cost'] = chart_df['cost'] / 1000 
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
                 fig.update_layout(height=325,width=340,showlegend=False)
@@ -1117,10 +1262,33 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹1,00,800","₹94,500","₹8,40,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                 
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
                 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[480000,54000,57600,840000,94500,100800,0,0,0,0,0,0,0,0,0]})  
+                cumulative_total_package_cost_y2=((drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))
                 
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]})
+
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
                 fig.update_layout(height=325,width=340,showlegend=False)
@@ -1134,9 +1302,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹1,00,800","₹94,500","₹8,40,000"],"3":["₹1,44,000","₹1,35,000","₹12,00,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})  
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[480000,54000,57600,840000,94500,100800,1200000,135000,144000,0,0,0,0,0,0]})   
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})
+  
  
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1151,9 +1348,43 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹1,00,800","₹94,500","₹8,40,000"],"3":["₹1,44,000","₹1,35,000","₹12,00,000"],"4":["₹1,87,200","₹1,75,500","₹15,60,000"],"5":["₹0","₹0","₹0"]})  
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[480000,54000,57600,840000,94500,100800,1200000,135000,144000,1560000,175500,187200,0,0,0]})   
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]}) 
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1169,9 +1400,50 @@ def main():
             
             
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹1,00,800","₹94,500","₹8,40,000"],"3":["₹1,44,000","₹1,35,000","₹12,00,000"],"4":["₹1,87,200","₹1,75,500","₹15,60,000"],"5":["₹2,30,400","₹2,16,000","₹19,20,000"]})
+                
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[480000,54000,57600,840000,94500,100800,1200000,135000,144000,1560000,175500,187200,1920000,216000,230400]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1187,9 +1459,22 @@ def main():
 
         elif selected_drug_1=="Drug 3":
             if time_horizon=="1":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[320000,54000,57600,0,0,0,0,0,0,0,0,0,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    print(drug3_dosage)
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
+
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1204,9 +1489,32 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹86,400","₹81,000","₹4,80,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]}) 
+                
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[320000,54000,57600,480000,81000,86400,0,0,0,0,0,0,0,0,0]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1221,9 +1529,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹86,400","₹81,000","₹4,80,000"],"3":["₹1,15,200","₹1,08,000","₹6,40,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})   
+                
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[320000,54000,57600,480000,81000,86400,640000,108000,115200,0,0,0,0,0,0]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1238,9 +1575,44 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹86,400","₹81,000","₹4,80,000"],"3":["₹1,15,200","₹1,08,000","₹6,40,000"],"4":["₹1,44,000","₹1,35,000","₹8,00,000"],"5":["₹0","₹0","₹0"]})
                 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[320000,54000,57600,480000,81000,86400,640000,108000,115200,800000,135000,144000,0,0,0]}) 
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]}) 
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1255,9 +1627,50 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹86,400","₹81,000","₹4,80,000"],"3":["₹1,15,200","₹1,08,000","₹6,40,000"],"4":["₹1,44,000","₹1,35,000","₹8,00,000"],"5":["₹1,72,000","₹1,62,000","₹9,60,000"]})
+                
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[320000,54000,57600,480000,81000,86400,640000,108000,115200,800000,135000,144000,960000,162000,172000]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1274,9 +1687,22 @@ def main():
                 
         elif selected_drug_1=="Drug 4":
             if time_horizon=="1":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[396000,81000,86400,0,0,0,0,0,0,0,0,0,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    print(drug4_dosage)
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
+
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1292,9 +1718,32 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹1,72,800","₹1,62,000","₹7,92,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[396000,81000,86400,792000,162000,172800,0,0,0,0,0,0,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1310,9 +1759,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹1,72,800","₹1,62,000","₹7,92,000"],"3":["₹2,59,200","₹2,43,000","₹11,88,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})   
+                
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[396000,81000,86400,792000,162000,172800,1188000,243000,259200,0,0,0,0,0,0]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1328,9 +1806,44 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹1,72,800","₹1,62,000","₹7,92,000"],"3":["₹2,59,200","₹2,43,000","₹11,88,000"],"4":["₹3,45,600","₹3,24,000","₹15,84,000"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[396000,81000,86400,792000,162000,172800,1188000,243000,259200,1584000,324000,345600,0,0,0]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]}) 
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1346,10 +1859,50 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹1,72,800","₹1,62,000","₹7,92,000"],"3":["₹2,59,200","₹2,43,000","₹11,88,000"],"4":["₹3,45,600","₹3,24,000","₹15,84,000"],"5":["₹4,32,000","₹4,05,000","₹19,80,000"]})
+                
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[396000,81000,86400,792000,162000,172800,1188000,243000,259200,1584000,324000,345600,1980000,405000,432000]}) 
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1365,10 +1918,24 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
             
         elif selected_drug_1=="Drug 5":
-            if time_horizon=="1":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[300000,81000,86400,0,0,0,0,0,0,0,0,0,0,0,0]})
+            if time_horizon=="1":
+                
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    print(drug5_dosage)
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
+
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1384,9 +1951,32 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹1,72,800","₹1,62,000","₹6,00,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[300000,81000,86400,600000,162000,172800,0,0,0,0,0,0,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1402,9 +1992,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹1,72,800","₹1,62,000","₹6,00,000"],"3":["₹2,59,200","₹2,43,000","₹9,00,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[300000,81000,86400,600000,162000,172800,900000,243000,259200,0,0,0,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1421,9 +2040,44 @@ def main():
                 
 
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹1,72,800","₹1,62,000","₹6,00,000"],"3":["₹2,59,200","₹2,43,000","₹9,00,000"],"4":["₹3,45,600","₹3,24,000","₹12,00,000"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[300000,81000,86400,600000,162000,172800,900000,243000,259200,1200000,324000,345600,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]}) 
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1439,9 +2093,50 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹1,72,800","₹1,62,000","₹6,00,000"],"3":["₹2,59,200","₹2,43,000","₹9,00,000"],"4":["₹3,45,600","₹3,24,000","₹12,00,000"],"5":["₹4,32,000","₹4,05,000","₹15,00,000"]})   
-      
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[300000,81000,86400,600000,162000,172800,900000,243000,259200,1200000,324000,345600,1500000,405000,432000]})
+                
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1462,7 +2157,20 @@ def main():
         if selected_drug_2=="Drug 1":
             if time_horizon=="1":
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[450000,40500,43200,0,0,0,0,0,0,0,0,0,0,0,0]})
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
+
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
             
                 chart_df['cost'] = chart_df['cost'] / 1000
                 
@@ -1479,17 +2187,38 @@ def main():
                 
                 st.plotly_chart(fig,config={'displayModeBar': False})
                 
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
-                
                 display_df = display_df.to_html(index=False)
                 display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
                 display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹64,800","₹60,750","₹6,75,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
                 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[450000,40500,43200,675000,60750,64800,0,0,0,0,0,0,0,0,0]})
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 
@@ -1512,9 +2241,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹64,800","₹60,750","₹6,75,000"],"3":["₹86,400","₹81,000","₹9,00,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[450000,40500,43200,675000,60750,64800,900000,81000,86400,0,0,0,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1536,9 +2294,44 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
             
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹64,800","₹60,750","₹6,75,000"],"3":["₹86,400","₹81,000","₹9,00,000"],"4":["₹1,08,000","₹1,01,250","₹11,25,000"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[450000,40500,43200,675000,60750,64800,900000,81000,86400,1125000,101250,108000,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
@@ -1560,10 +2353,50 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
                     
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹43,200","₹40,500","₹4,50,000"],"2":["₹64,800","₹60,750","₹6,75,000"],"3":["₹86,400","₹81,000","₹9,00,000"],"4":["₹1,08,000","₹1,01,250","₹11,25,000"],"5":["₹1,29,000","₹1,21,500","₹13,50,000"]})
-
                 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[450000,40500,43200,675000,60750,64800,900000,81000,86400,1125000,101250,108000,1350000,121500,129000]})
+                cumulative_total_package_cost_y1=(drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug1_cost_per_vial+procedure_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug1_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug1_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug1_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug1_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug1_dosage)+(consulting_charges*(drug1_dosage/2))+(oct_cost*drug1_dosage)+(oct_cost*(drug1_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug1_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug1_dosage/2))+(patient_lost_opportunity_cost*drug1_dosage)+(caregiver_lost_opportunity_cost*(drug1_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1586,10 +2419,24 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
         elif selected_drug_2=="Drug 2":
-            if time_horizon=="1":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[480000,54000,57600,0,0,0,0,0,0,0,0,0,0,0,0]})
+            if time_horizon=="1":
+                
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    print(drug2_dosage)
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
+
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1612,9 +2459,32 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹1,00,800","₹94,500","₹8,40,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
                 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[480000,54000,57600,840000,94500,100800,0,0,0,0,0,0,0,0,0]})  
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 
@@ -1637,9 +2507,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹1,00,800","₹94,500","₹8,40,000"],"3":["₹1,44,000","₹1,35,000","₹12,00,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})  
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[480000,54000,57600,840000,94500,100800,1200000,135000,144000,0,0,0,0,0,0]})  
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})  
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1662,9 +2561,44 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)
 
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹1,00,800","₹94,500","₹8,40,000"],"3":["₹1,44,000","₹1,35,000","₹12,00,000"],"4":["₹1,87,200","₹1,75,500","₹15,60,000"],"5":["₹0","₹0","₹0"]})  
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[480000,54000,57600,840000,94500,100800,1200000,135000,144000,1560000,175500,187200,0,0,0]})   
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]}) 
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]})  
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1688,10 +2622,50 @@ def main():
             
             
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹4,80,000"],"2":["₹1,00,800","₹94,500","₹8,40,000"],"3":["₹1,44,000","₹1,35,000","₹12,00,000"],"4":["₹1,87,200","₹1,75,500","₹15,60,000"],"5":["₹2,30,400","₹2,16,000","₹19,20,000"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[480000,54000,57600,840000,94500,100800,1200000,135000,144000,1560000,175500,187200,1920000,216000,230400]})  
+                cumulative_total_package_cost_y1=(drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug2_cost_per_vial+procedure_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug2_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug2_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug2_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug2_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug2_dosage)+(consulting_charges*(drug2_dosage/2))+(oct_cost*drug2_dosage)+(oct_cost*(drug2_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug2_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug2_dosage/2))+(patient_lost_opportunity_cost*drug2_dosage)+(caregiver_lost_opportunity_cost*(drug2_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
                 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1714,10 +2688,24 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True) 
 
         elif selected_drug_2=="Drug 3":
-            if time_horizon=="1":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[320000,54000,57600,0,0,0,0,0,0,0,0,0,0,0,0]})
+            if time_horizon=="1":
+                
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    print(drug3_dosage)
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
+
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1740,9 +2728,32 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹86,400","₹81,000","₹4,80,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]}) 
+                
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[320000,54000,57600,480000,81000,86400,0,0,0,0,0,0,0,0,0]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]}) 
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1765,9 +2776,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹86,400","₹81,000","₹4,80,000"],"3":["₹1,15,200","₹1,08,000","₹6,40,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})   
+                
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[320000,54000,57600,480000,81000,86400,640000,108000,115200,0,0,0,0,0,0]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1790,9 +2830,56 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹86,400","₹81,000","₹4,80,000"],"3":["₹1,15,200","₹1,08,000","₹6,40,000"],"4":["₹1,44,000","₹1,35,000","₹8,00,000"],"5":["₹0","₹0","₹0"]})
                 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[320000,54000,57600,480000,81000,86400,640000,108000,115200,800000,135000,144000,0,0,0]}) 
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]}) 
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]})
+
+                chart_df['cost'] = chart_df['cost'] / 1000
+                fig = px.bar(chart_df, x="year", y="cost", color="cost_type")
+                fig.update_layout(height=325,width=340,showlegend=False)
+                fig.update_xaxes(showticklabels=False, title_text='')
+                fig.update_yaxes(tickformat=',',ticksuffix="k",tickprefix="₹")
+                st.plotly_chart(fig,config={'displayModeBar': False})
+
+                display_df = display_df.to_html(index=False)
+                display_df = display_df.replace('<table', '<table class="table4" style="table-layout: fixed; width: 100%;" ')
+                display_df = display_df.replace('<thead>', '<thead><style>.table4 th:first-child { width: 70px; } .table4 td, .table4 th { text-align: center;vertical-align: middle; font-size: 0.73em; width: auto; }</style>')
+                st.markdown(display_df, unsafe_allow_html=True)
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1815,9 +2902,50 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
             
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹57,600","₹54,000","₹3,20,000"],"2":["₹86,400","₹81,000","₹4,80,000"],"3":["₹1,15,200","₹1,08,000","₹6,40,000"],"4":["₹1,44,000","₹1,35,000","₹8,00,000"],"5":["₹1,72,000","₹1,62,000","₹9,60,000"]})
+                
+                cumulative_total_package_cost_y1=(drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[320000,54000,57600,480000,81000,86400,640000,108000,115200,800000,135000,144000,960000,162000,172000]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug3_cost_per_vial+procedure_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug3_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug3_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug3_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug3_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug3_dosage)+(consulting_charges*(drug3_dosage/2))+(oct_cost*drug3_dosage)+(oct_cost*(drug3_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug3_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug3_dosage/2))+(patient_lost_opportunity_cost*drug3_dosage)+(caregiver_lost_opportunity_cost*(drug3_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1841,10 +2969,24 @@ def main():
             
                 
         elif selected_drug_2=="Drug 4":
-            if time_horizon=="1":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[396000,81000,86400,0,0,0,0,0,0,0,0,0,0,0,0]})
+            if time_horizon=="1":
+                
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    print(drug4_dosage)
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
+
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1867,9 +3009,32 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹1,72,800","₹1,62,000","₹7,92,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[396000,81000,86400,792000,162000,172800,0,0,0,0,0,0,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1892,9 +3057,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹1,72,800","₹1,62,000","₹7,92,000"],"3":["₹2,59,200","₹2,43,000","₹11,88,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})   
+                
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[396000,81000,86400,792000,162000,172800,1188000,243000,259200,0,0,0,0,0,0]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1917,9 +3111,44 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹1,72,800","₹1,62,000","₹7,92,000"],"3":["₹2,59,200","₹2,43,000","₹11,88,000"],"4":["₹3,45,600","₹3,24,000","₹15,84,000"],"5":["₹0","₹0","₹0"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[396000,81000,86400,792000,162000,172800,1188000,243000,259200,1584000,324000,345600,0,0,0]}) 
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]}) 
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]}) 
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1942,10 +3171,51 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True) 
             
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,96,000"],"2":["₹1,72,800","₹1,62,000","₹7,92,000"],"3":["₹2,59,200","₹2,43,000","₹11,88,000"],"4":["₹3,45,600","₹3,24,000","₹15,84,000"],"5":["₹4,32,000","₹4,05,000","₹19,80,000"]})
+                
 
+                cumulative_total_package_cost_y1=(drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[396000,81000,86400,792000,162000,172800,1188000,243000,259200,1584000,324000,345600,1980000,405000,432000]}) 
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug4_cost_per_vial+procedure_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug4_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug4_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug4_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug4_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug4_dosage)+(consulting_charges*(drug4_dosage/2))+(oct_cost*drug4_dosage)+(oct_cost*(drug4_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug4_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug4_dosage/2))+(patient_lost_opportunity_cost*drug4_dosage)+(caregiver_lost_opportunity_cost*(drug4_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1968,10 +3238,24 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
             
         elif selected_drug_2=="Drug 5":
-            if time_horizon=="1":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[300000,81000,86400,0,0,0,0,0,0,0,0,0,0,0,0]})
+            if time_horizon=="1":
+                
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    print(drug5_dosage)
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0,0,0,0]})
+
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":["₹0","₹0","₹0"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -1994,9 +3278,33 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="2":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹1,72,800","₹1,62,000","₹6,00,000"],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[300000,81000,86400,600000,162000,172800,0,0,0,0,0,0,0,0,0]})
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":["₹0","₹0","₹0"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y1,0,0,0,0,0,0,0,0,0]})
 
                 
                 chart_df['cost'] = chart_df['cost'] / 1000
@@ -2020,9 +3328,38 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
 
             elif time_horizon=="3":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹1,72,800","₹1,62,000","₹6,00,000"],"3":["₹2,59,200","₹2,43,000","₹9,00,000"],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[300000,81000,86400,600000,162000,172800,900000,243000,259200,0,0,0,0,0,0]})
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":["₹0","₹0","₹0"],"5":["₹0","₹0","₹0"]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,0,0,0,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -2046,9 +3383,44 @@ def main():
                 
 
             elif time_horizon=="4":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹1,72,800","₹1,62,000","₹6,00,000"],"3":["₹2,59,200","₹2,43,000","₹9,00,000"],"4":["₹3,45,600","₹3,24,000","₹12,00,000"],"5":["₹0","₹0","₹0"]})
+                
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
 
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[300000,81000,86400,600000,162000,172800,900000,243000,259200,1200000,324000,345600,0,0,0]})
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":["₹0","₹0","₹0"]}) 
+
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,0,0,0]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
 
@@ -2071,9 +3443,50 @@ def main():
                 st.markdown(display_df, unsafe_allow_html=True)  
             
             elif time_horizon=="5":
-                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':["₹86,400","₹81,000","₹3,00,000"],"2":["₹1,72,800","₹1,62,000","₹6,00,000"],"3":["₹2,59,200","₹2,43,000","₹9,00,000"],"4":["₹3,45,600","₹3,24,000","₹12,00,000"],"5":["₹4,32,000","₹4,05,000","₹15,00,000"]})   
-      
-                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs','Total Package Cost','Direct Costs','Indirect Costs'],'cost':[300000,81000,86400,600000,162000,172800,900000,243000,259200,1200000,324000,345600,1500000,405000,432000]})
+                
+                cumulative_total_package_cost_y1=(drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y1
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y1=(consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y1)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                    cumulative_indirect_cost_y1=((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y1)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y1)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y1//2))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y1=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y1=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))   
+                
+                cumulative_total_package_cost_y2=((drug5_cost_per_vial+procedure_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)
+                if clinical_status=="Per Label":
+                    cumulative_direct_cost_y2=int(((consulting_charges*cumulative_predefined_drug5_perlabel_dosage_y2345)+(consulting_charges*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(oct_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(oct_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                    cumulative_indirect_cost_y2=int((((travel_cost+miscellaneous_cost+food_cost)*cumulative_predefined_drug5_perlabel_dosage_y2345)+((travel_cost+miscellaneous_cost+food_cost)*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(patient_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(patient_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))+(caregiver_lost_opportunity_cost*cumulative_predefined_drug5_perlabel_dosage_y2345)+(caregiver_lost_opportunity_cost*(cumulative_predefined_drug5_perlabel_dosage_y2345/2))))
+
+                elif clinical_status=="RWE":
+                    cumulative_direct_cost_y2=int((consulting_charges*drug5_dosage)+(consulting_charges*(drug5_dosage/2))+(oct_cost*drug5_dosage)+(oct_cost*(drug5_dosage/2)))
+
+                    cumulative_indirect_cost_y2=int(((travel_cost+miscellaneous_cost+food_cost)*drug5_dosage)+((travel_cost+miscellaneous_cost+food_cost)*(drug5_dosage/2))+(patient_lost_opportunity_cost*drug5_dosage)+(caregiver_lost_opportunity_cost*(drug5_dosage/2)))
+                
+                cumulative_total_package_cost_y3=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y3=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y3=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y4=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y4=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y4=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+
+                cumulative_total_package_cost_y5=cumulative_total_package_cost_y1+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2+cumulative_total_package_cost_y2
+
+                cumulative_direct_cost_y5=cumulative_direct_cost_y1+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2+cumulative_direct_cost_y2
+
+                cumulative_indirect_cost_y5=cumulative_indirect_cost_y1+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2+cumulative_indirect_cost_y2
+                
+                display_df=pd.DataFrame({"Cost Type":['Indirect Costs','Direct Costs','Total Package Cost'],'1':[wes_to_indian_conversion(cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y1)],"2":[wes_to_indian_conversion(cumulative_indirect_cost_y2+cumulative_indirect_cost_y1),wes_to_indian_conversion(cumulative_direct_cost_y2+cumulative_direct_cost_y1),wes_to_indian_conversion(cumulative_total_package_cost_y2+cumulative_total_package_cost_y1)],"3":[wes_to_indian_conversion(cumulative_indirect_cost_y3),wes_to_indian_conversion(cumulative_direct_cost_y3),wes_to_indian_conversion(cumulative_total_package_cost_y3)],"4":[wes_to_indian_conversion(cumulative_indirect_cost_y4),wes_to_indian_conversion(cumulative_direct_cost_y4),wes_to_indian_conversion(cumulative_total_package_cost_y4)],"5":[wes_to_indian_conversion(cumulative_indirect_cost_y5),wes_to_indian_conversion(cumulative_direct_cost_y5),wes_to_indian_conversion(cumulative_total_package_cost_y5)]})
+                
+                chart_df=pd.DataFrame({'year':["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5"],'cost_type':['Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect','Total_Package_Cost','Direct','Indirect'],'cost':[cumulative_total_package_cost_y1,cumulative_direct_cost_y1,cumulative_indirect_cost_y1,cumulative_total_package_cost_y2+cumulative_total_package_cost_y1,cumulative_direct_cost_y2+cumulative_direct_cost_y1,cumulative_indirect_cost_y2+cumulative_indirect_cost_y2,cumulative_total_package_cost_y3,cumulative_direct_cost_y3,cumulative_indirect_cost_y3,cumulative_total_package_cost_y4,cumulative_direct_cost_y4,cumulative_indirect_cost_y4,cumulative_total_package_cost_y5,cumulative_direct_cost_y5,cumulative_direct_cost_y5]})
 
                 chart_df['cost'] = chart_df['cost'] / 1000
                 
